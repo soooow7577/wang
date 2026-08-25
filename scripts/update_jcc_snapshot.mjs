@@ -1,5 +1,8 @@
 import { createDecipheriv } from "node:crypto";
+import { setDefaultResultOrder } from "node:dns";
 import { readFile, writeFile } from "node:fs/promises";
+
+setDefaultResultOrder("ipv4first");
 
 const HTML_PATH = new URL("../index.html", import.meta.url);
 const API_BASE = "https://api.datatft.com";
