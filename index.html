@@ -240,7 +240,7 @@
     .grade-legend{margin:0 -3px 10px;padding:9px 10px;border:1px solid rgba(84,92,104,.13);border-radius:14px;color:#6c727c;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(225,229,233,.74));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
     .grade-legend b{color:#282a2e}
     .grade-dot{border-radius:7px;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
-    .grade-s{background:#ff2d55}.grade-a{background:#af52de}.grade-b{background:#007aff}.grade-c{background:#34c759}.grade-d{background:#8e8e93}
+    .grade-s{background:#ff3b30}.grade-a{background:#ff9500}.grade-b{background:#007aff}.grade-c{background:#34c759}.grade-d{background:#8e8e93}
     .method-note{border-color:rgba(84,92,104,.13);border-radius:16px;color:#555c67;background:rgba(255,255,255,.76);box-shadow:0 7px 20px rgba(54,62,73,.07),inset 0 1px 0 #fff}
     .filter-chip{border-color:rgba(0,122,255,.2);color:#0064d8;background:#e8f3ff}
     .meta-strip{padding:10px 16px;color:#6e7480}
@@ -249,6 +249,11 @@
     .poster{border-radius:23px 0 0 0;background:#cfd4da}
     .rank-no{border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(32,36,42,.68);backdrop-filter:blur(9px)}
     .tier{border-radius:9px;background:linear-gradient(180deg,#2194ff,#007aff);box-shadow:0 4px 10px rgba(0,122,255,.22)}
+    .tier-s{background:linear-gradient(180deg,#ff6259,#ff3b30);box-shadow:0 4px 10px rgba(255,59,48,.24)}
+    .tier-a{background:linear-gradient(180deg,#ffad33,#ff9500);box-shadow:0 4px 10px rgba(255,149,0,.24)}
+    .tier-b{background:linear-gradient(180deg,#2194ff,#007aff);box-shadow:0 4px 10px rgba(0,122,255,.22)}
+    .tier-c{background:linear-gradient(180deg,#59d974,#34c759);box-shadow:0 4px 10px rgba(52,199,89,.22)}
+    .tier-d{background:linear-gradient(180deg,#a9a9ae,#8e8e93);box-shadow:0 4px 10px rgba(99,99,102,.2)}
     .comp-title{color:#1c1c1e;letter-spacing:-.01em}
     .trend-pill{color:#c61f45;background:#ffeaf0}
     .verify-pill{color:#137c52;background:#e6f7ec}
@@ -290,14 +295,6 @@
         <button class="refresh" id="refresh" aria-label="刷新今日数据">↻</button>
       </div>
       <div class="ranking-title"><strong>今日综合榜</strong><span>战绩 + 趋势</span></div>
-      <div class="data-row">
-        <button class="sort-btn active" data-sort="compositeScore">综合分⌄</button>
-        <button class="sort-btn" data-sort="avgPlacement">平均排名⌄</button>
-        <button class="sort-btn" data-sort="top4Rate">前四率⌄</button>
-        <button class="sort-btn" data-sort="topRate">登顶率⌄</button>
-        <button class="sort-btn" data-sort="sampleCount">场次⌄</button>
-        <button class="filter-btn" id="openFilter">☷ 筛选</button>
-      </div>
       <div class="grade-legend"><b>等级含义</b><span class="grade-dot grade-s">S</span>顶级<span class="grade-dot grade-a">A</span>强势<span class="grade-dot grade-b">B</span>稳定<span class="grade-dot grade-c">C</span>观察<span class="grade-dot grade-d">D</span>慎选</div>
     </header>
     <div class="active-filters" id="activeFilters"></div>
@@ -372,7 +369,7 @@ const DATA_TFT_SNAPSHOT=[{"id":"16218","name":"高约小法师","tier":"A","avgP
       const trend=x.trend?.mentions?`<span class="trend-pill">抖音热度 ${x.trend.mentions}</span>`:"";
       const verified=x.dataJ?`<span class="verify-pill">双源验证</span>`:`<span>DataTFT</span>`;
       const score=Number(x.compositeScore??x.dataScore??0).toFixed(1);
-      return `<article class="comp-card"><div class="card-main"><div class="poster"><img src="${esc(x.poster||x.image)}" alt="${esc(x.name)}"><span class="rank-no">#${index+1}</span><span class="tier">${esc(x.tier||"—")} · ${esc(tierNames[x.tier]||"未评级")}</span><span class="comp-name">${esc(x.name)}</span></div><div class="card-body"><div class="card-title-row"><h3 class="comp-title">${esc(x.name)}</h3>${trend}</div><div class="source-line">${verified}<span>${Number(x.sampleCount||0).toLocaleString("zh-CN")} 局样本</span></div><div class="metrics"><div class="metric"><span>综合分</span><strong>${score}</strong></div><div class="metric"><span>平均</span><strong>${Number(x.avgPlacement).toFixed(2)}</strong></div><div class="metric"><span>前四率</span><strong>${Number(x.top4Rate).toFixed(1)}%</strong></div><div class="metric"><span>登顶率</span><strong>${Number(x.topRate).toFixed(1)}%</strong></div></div><div class="heroes">${heroes}</div><div class="traits">${traits}</div></div></div><button class="copy copy-code" data-copy="${esc(x.id)}" ${x.code?"":"disabled"} aria-label="${x.code?`复制${esc(x.name)}阵容码`:"阵容码待补"}"><strong>复制阵容码</strong></button></article>`;
+      return `<article class="comp-card"><div class="card-main"><div class="poster"><img src="${esc(x.poster||x.image)}" alt="${esc(x.name)}"><span class="rank-no">#${index+1}</span><span class="tier tier-${esc(String(x.tier||"").toLowerCase())}">${esc(x.tier||"—")} · ${esc(tierNames[x.tier]||"未评级")}</span><span class="comp-name">${esc(x.name)}</span></div><div class="card-body"><div class="card-title-row"><h3 class="comp-title">${esc(x.name)}</h3>${trend}</div><div class="source-line">${verified}<span>${Number(x.sampleCount||0).toLocaleString("zh-CN")} 局样本</span></div><div class="metrics"><div class="metric"><span>综合分</span><strong>${score}</strong></div><div class="metric"><span>平均</span><strong>${Number(x.avgPlacement).toFixed(2)}</strong></div><div class="metric"><span>前四率</span><strong>${Number(x.top4Rate).toFixed(1)}%</strong></div><div class="metric"><span>登顶率</span><strong>${Number(x.topRate).toFixed(1)}%</strong></div></div><div class="heroes">${heroes}</div><div class="traits">${traits}</div></div></div><button class="copy copy-code" data-copy="${esc(x.id)}" ${x.code?"":"disabled"} aria-label="${x.code?`复制${esc(x.name)}阵容码`:"阵容码待补"}"><strong>复制阵容码</strong></button></article>`;
     }
     function filteredRows(){
       let rows=state.comps.filter(x=>(!state.hero||x.heroes.some(h=>h.name===state.hero))&&(!state.career||x.careers.some(t=>t.name===state.career))&&(!state.race||x.races.some(t=>t.name===state.race)));
@@ -401,11 +398,10 @@ const DATA_TFT_SNAPSHOT=[{"id":"16218","name":"高约小法师","tier":"A","avgP
     function legacyCopy(code){const t=document.createElement("textarea");t.value=code;t.setAttribute("readonly","");t.style.cssText="position:fixed;top:0;left:0;width:1px;height:1px;opacity:.01";document.body.appendChild(t);t.focus();t.setSelectionRange(0,t.value.length);let ok=false;try{ok=document.execCommand("copy")}catch{}t.remove();return ok}
     async function copyCode(id,button){const code=state.comps.find(x=>x.id===id)?.code;if(!code)return;let ok=false;let modernCopy=null;try{modernCopy=navigator.clipboard?.writeText?.(code)||null}catch{}if(modernCopy){try{await modernCopy;ok=true}catch{}}if(!ok)ok=legacyCopy(code);if(ok&&button){const label=button.querySelector("strong");const old=label.textContent;label.textContent="已复制 ✓";setTimeout(()=>label.textContent=old,1600)}toast(ok?"阵容码已复制，可到游戏中粘贴":"复制失败，请长按阵容码按钮重试")}
 
-    document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{state.sort=b.dataset.sort;document.querySelectorAll("[data-sort]").forEach(x=>x.classList.toggle("active",x===b));render()});
     document.querySelectorAll("[data-filter-tab]").forEach(b=>b.onclick=()=>{state.filterTab=b.dataset.filterTab;document.querySelectorAll("[data-filter-tab]").forEach(x=>x.classList.toggle("active",x===b));renderFilterContent()});
     $("list").onclick=e=>{const b=e.target.closest("[data-copy]");if(b)copyCode(b.dataset.copy,b)};
     $("filterContent").onclick=e=>{const hero=e.target.closest("[data-hero]");if(hero){state.hero=state.hero===hero.dataset.hero?"":hero.dataset.hero;render();return}const trait=e.target.closest("[data-trait]");if(trait){const type=trait.dataset.traitType;state[type]=state[type]===trait.dataset.trait?"":trait.dataset.trait;render()}};
-    $("openFilter").onclick=openFilter;$("closeFilter").onclick=closeFilter;$("backdrop").onclick=closeFilter;$("doneFilter").onclick=closeFilter;
+    $("closeFilter").onclick=closeFilter;$("backdrop").onclick=closeFilter;$("doneFilter").onclick=closeFilter;
     $("clearFilter").onclick=()=>{state.hero="";state.race="";state.career="";render();toast("筛选已重置")};
     $("navInfo").onclick=()=>{state.filterTab="hero";document.querySelectorAll("[data-filter-tab]").forEach(x=>x.classList.toggle("active",x.dataset.filterTab==="hero"));openFilter()};
 
