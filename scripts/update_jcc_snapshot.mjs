@@ -4,7 +4,7 @@ import { readFile, writeFile } from "node:fs/promises";
 
 setDefaultResultOrder("ipv4first");
 
-const HTML_PATH = new URL("../index.html", import.meta.url);
+const HTML_PATH = new URL("../outputs/铲阵雷达-可直接打开.html", import.meta.url);
 const API_BASE = "https://api.datatft.com";
 const SITE_BASE = "https://jcc.datatft.com";
 const DATAJ_BASE = "https://www.dataj.cc/api/web";
@@ -95,6 +95,10 @@ function uniqueTraitCounts(heroes, field) {
 
 function heroImage(id, type = "default") {
   return `https://static.datatft.com/images/heros/${type}/${id}.jpg`;
+}
+
+function rosterKey(heroes) {
+  return heroes.map((hero) => String(hero.id)).sort().join(",");
 }
 
 function normalizeName(value) {
@@ -198,6 +202,11 @@ async function buildSnapshot() {
   ]);
   if (!Array.isArray(teamData.list) || teamData.list.length === 0) throw new Error("DataTFT returned no S18 teams");
   const heroById = new Map(heroMetadata.map((hero) => [String(hero.chessId), hero]));
+  const codeByRoster = new Map(
+    teamData.list
+      .filter((team) => typeof team.jccCode === "string" && team.jccCode.startsWith("【阵容码】##"))
+      .map((team) => [rosterKey(team.heros), team.jccCode]),
+  );
   const details = await Promise.all(
     teamData.list.map((team) => post("/team/detail", { teamId: team.id, ...TEAM_QUERY })),
   );
@@ -216,7 +225,8 @@ async function buildSnapshot() {
         meta,
       };
     });
-    const code = typeof team.jccCode === "string" && team.jccCode.startsWith("【阵容码】##") ? team.jccCode : "";
+    const directCode = typeof team.jccCode === "string" && team.jccCode.startsWith("【阵容码】##") ? team.jccCode : "";
+    const code = directCode || codeByRoster.get(rosterKey(team.heros)) || "";
     return {
       id: String(team.id),
       name: team.title,
