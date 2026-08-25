@@ -1,10 +1,11 @@
+
 import { createDecipheriv } from "node:crypto";
 import { setDefaultResultOrder } from "node:dns";
 import { readFile, writeFile } from "node:fs/promises";
 
 setDefaultResultOrder("ipv4first");
 
-const HTML_PATH = new URL("../outputs/铲阵雷达-可直接打开.html", import.meta.url);
+const HTML_PATH = new URL("../index.html", import.meta.url);
 const API_BASE = "https://api.datatft.com";
 const SITE_BASE = "https://jcc.datatft.com";
 const DATAJ_BASE = "https://www.dataj.cc/api/web";
@@ -67,7 +68,7 @@ async function post(path, body) {
   return payload.data;
 }
 
-async function loadHeroMetadata() {
+async function loadGameMetadata() {
   const home = await getText(`${SITE_BASE}/`);
   const entry = home.match(/\/assets\/index-[A-Za-z0-9_-]+\.js/)?.[0];
   if (!entry) throw new Error("Could not locate the DataTFT entry bundle");
@@ -80,7 +81,138 @@ async function loadHeroMetadata() {
   const decipher = createDecipheriv("aes-128-ecb", Buffer.from("tftdaiaDexEamVaj"), null);
   decipher.setAutoPadding(true);
   const decoded = Buffer.concat([decipher.update(Buffer.from(encrypted, "base64")), decipher.final()]);
-  return JSON.parse(decoded.toString("utf8")).heros18;
+  const payload = JSON.parse(decoded.toString("utf8"));
+  return { heroes: payload.heros18 || [], equips: payload.equips18 || [] };
+}
+
+function buildTeamCodeMaps(heroes, equips) {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const mapAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!<>.";
+  const mapIndex = new Map([...mapAlphabet].map((value, index) => [value, index]));
+  const heroByCode = new Map();
+  let generatedHeroIndex = 0;
+  const specialHeroes = [9977, 9978, 999001, 999002, 999003, 999004].map((chessId) => ({
+    chessId,
+    displayName: chessId === 9977 ? "目标假人" : chessId === 9978 ? "魔像" : "特殊召唤物",
+    price: 0,
+  }));
+  for (const hero of [...heroes, ...specialHeroes]) {
+    const code = hero.code || `z${alphabet[generatedHeroIndex++]}`;
+    heroByCode.set(code, hero);
+  }
+  const excluded = new Set([612, 545, 573, 31004, 31005, 31006, 31007, 2252]);
+  const appended = new Set([31004, 31005, 31006, 31007]);
+  const orderedEquips = [
+    ...equips.filter((equip) => !excluded.has(Number(equip.equipId))),
+    ...equips.filter((equip) => appended.has(Number(equip.equipId))),
+  ];
+  const equipByCode = new Map();
+  for (let index = 0; index < orderedEquips.length; index += 1) {
+    const equip = orderedEquips[index];
+    const row = Math.trunc(index / alphabet.length);
+    const code = equip.code || `${alphabet[row]}${alphabet[index - row * alphabet.length]}`;
+    equipByCode.set(code, equip);
+  }
+  return { mapIndex, heroByCode, equipByCode };
+}
+
+function equipImage(id) {
+  return `https://static.datatft.com/images/equips/${id}.png`;
+}
+
+function decodeTeamBuilder(teamUrl, maps) {
+  let code = String(teamUrl || "")
+    .replace(/https:\/\/(?:www|jcc)\.datatft\.com\/(?:team-builder|simulator)\//i, "")
+    .replace(/%7C/gi, "|")
+    .replace(/\s/g, "");
+  if (code.endsWith(".")) code = code.slice(0, -1);
+  const seasonSuffix = code.match(/s(\d{1,2})$/);
+  if (seasonSuffix) code = code.slice(0, -(seasonSuffix[1].length + 1));
+  if (!code) return [];
+  code = decodeURIComponent(code);
+  const positions = new Array(28).fill(null);
+  let cursor = 0;
+  let isError = false;
+  while (cursor < code.length) {
+    if (code[cursor] === "|") break;
+    const index = maps.mapIndex.get(code[cursor++]);
+    if (index == null) { console.warn(`Unknown board index at ${cursor - 1}: ${code[cursor - 1]}`); isError = true; break; }
+    let heroCode = code.slice(cursor, cursor + 2);
+    cursor += 2;
+    let hero = maps.heroByCode.get(heroCode);
+    if (!hero) { console.warn(`Unknown hero code at ${cursor - 2}: ${heroCode}`); isError = true; break; }
+    const items = [];
+    if (/^[0-9]$/.test(code[cursor] || "")) {
+      const itemCount = Number(code[cursor++]);
+      for (let itemIndex = 0; itemIndex < itemCount; itemIndex += 1) {
+        const itemCode = code.slice(cursor, cursor + 2);
+        cursor += 2;
+        const equip = maps.equipByCode.get(itemCode);
+        if (equip) items.push({
+          id: String(equip.equipId),
+          name: equip.name || equip.jccname || String(equip.equipId),
+          picture: equipImage(equip.equipId),
+        });
+        else { console.warn(`Unknown equip code at ${cursor - 2}: ${itemCode}`); isError = true; }
+      }
+    }
+    if (code[cursor] === "~") {
+      cursor += 1;
+      const powerCount = Number(code[cursor++] || 0);
+      cursor += powerCount * 3;
+    }
+    let stars = 2;
+    if (code[cursor] === "*") {
+      cursor += 1;
+      stars = Number(code[cursor++] || 2);
+    }
+    let replacement = null;
+    if (code[cursor] === "_") {
+      cursor += 1;
+      heroCode = code.slice(cursor, cursor + 2);
+      cursor += 2;
+      replacement = maps.heroByCode.get(heroCode) || null;
+    }
+    while (code[cursor] === "^") cursor += 2;
+    let isMain = false;
+    if (code[cursor] === "-") {
+      cursor += 2;
+      isMain = true;
+    }
+    if (index < 28) positions[index] = {
+      index,
+      row: Math.floor(index / 7) + 1,
+      col: index % 7 + 1,
+      id: String(hero.chessId),
+      name: hero.displayName || hero.title || hero.key || String(hero.chessId),
+      picture: heroImage(hero.chessId),
+      price: Number(hero.price || 0),
+      stars,
+      isMain,
+      replacement: replacement ? {
+        id: String(replacement.chessId),
+        name: replacement.displayName || replacement.title || replacement.key || String(replacement.chessId),
+        picture: heroImage(replacement.chessId),
+      } : null,
+      equips: items,
+    };
+  }
+  if (isError) throw new Error(`Could not decode Team Builder data: ${teamUrl}`);
+  return positions.filter(Boolean);
+}
+
+function recommendedEquips(strategy, equipById) {
+  return new Map((strategy?.equips || []).map((entry) => {
+    const firstSet = Array.isArray(entry.equips?.[0]) ? entry.equips[0] : [];
+    return [String(entry.heroId), firstSet.map((id) => {
+      const equip = equipById.get(String(id));
+      return {
+        id: String(id),
+        name: equip?.name || equip?.jccname || String(id),
+        picture: equipImage(id),
+      };
+    })];
+  }));
 }
 
 function uniqueTraitCounts(heroes, field) {
@@ -193,27 +325,34 @@ function addCompositeSignals(comp, dataJComps, douyinCards) {
 }
 
 async function buildSnapshot() {
-  const [teamData, rankData, heroMetadata, dataJComps, douyinCards] = await Promise.all([
+  const [teamData, rankData, gameMetadata, dataJComps, douyinCards] = await Promise.all([
     post("/team/list", TEAM_QUERY),
     post("/team/rank", {}),
-    loadHeroMetadata(),
+    loadGameMetadata(),
     loadDataJComps(),
     loadDouyinCards(),
   ]);
   if (!Array.isArray(teamData.list) || teamData.list.length === 0) throw new Error("DataTFT returned no S18 teams");
-  const heroById = new Map(heroMetadata.map((hero) => [String(hero.chessId), hero]));
+  const heroById = new Map(gameMetadata.heroes.map((hero) => [String(hero.chessId), hero]));
+  const equipById = new Map(gameMetadata.equips.map((equip) => [String(equip.equipId), equip]));
+  const teamCodeMaps = buildTeamCodeMaps(gameMetadata.heroes, gameMetadata.equips);
   const codeByRoster = new Map(
     teamData.list
       .filter((team) => typeof team.jccCode === "string" && team.jccCode.startsWith("【阵容码】##"))
       .map((team) => [rosterKey(team.heros), team.jccCode]),
   );
-  const details = await Promise.all(
-    teamData.list.map((team) => post("/team/detail", { teamId: team.id, ...TEAM_QUERY })),
-  );
+  const [details, strategies] = await Promise.all([
+    Promise.all(teamData.list.map((team) => post("/team/detail", { teamId: team.id, ...TEAM_QUERY }))),
+    Promise.all(teamData.list.map((team) => post("/team/strategy", { id: team.strategyId || team.id }))),
+  ]);
   const baseComps = teamData.list.map((team, index) => {
     const base = details[index]?.base || {};
+    const strategy = strategies[index] || {};
+    const board = decodeTeamBuilder(strategy.teamUrl, teamCodeMaps);
+    const strategyEquips = recommendedEquips(strategy, equipById);
     const heroes = team.heros.map((hero) => {
       const meta = heroById.get(String(hero.id));
+      const placed = board.find((item) => item.id === String(hero.id));
       return {
         name: meta?.displayName || meta?.title || hero.key || String(hero.id),
         id: String(hero.id),
@@ -222,6 +361,7 @@ async function buildSnapshot() {
         price: Number(meta?.price || 0),
         isCarry: String(hero.id) === String(team.heroId),
         stars: Number(hero.stars || 2),
+        recommendedItems: placed?.equips?.length ? placed.equips : (strategyEquips.get(String(hero.id)) || []),
         meta,
       };
     });
@@ -239,10 +379,23 @@ async function buildSnapshot() {
       code,
       poster: `https://static.datatft.com/images/heros/bg/s6/${team.heroId}.jpg`,
       heroes: heroes.map(({ meta, ...hero }) => hero),
+      board,
+      guide: {
+        source: "DataTFT 一图流",
+        updatedAt: strategy.updateTime || rankData.updateTime || "",
+        teamUrl: strategy.teamUrl || "",
+        core: strategy.core || "",
+        open: strategy.open || "",
+        earlyDesc: strategy.earlyDesc || "",
+        midDesc: strategy.midDesc || "",
+        finalDesc: strategy.finalDesc || "",
+      },
       races: uniqueTraitCounts(heroes, "races"),
       careers: uniqueTraitCounts(heroes, "jobs"),
     };
   });
+  const missingBoards = baseComps.filter((comp) => !comp.board.length).map((comp) => comp.name);
+  if (missingBoards.length) throw new Error(`Missing verified board data: ${missingBoards.join(", ")}`);
   const comps = baseComps.map((comp) => addCompositeSignals(comp, dataJComps, douyinCards));
   return {
     comps,
@@ -255,6 +408,10 @@ async function buildSnapshot() {
 
 const { comps, updatedAt, trendUpdatedAt, trendCardCount, dataJMatchCount } = await buildSnapshot();
 const codeCount = comps.filter((comp) => comp.code).length;
+const detailCount = comps.filter((comp) => comp.board?.length).length;
+const equippedHeroCount = comps.reduce((count, comp) => count + comp.board.filter((hero) => hero.equips?.length).length, 0);
+if (codeCount !== comps.length) throw new Error(`Only ${codeCount}/${comps.length} lineups have verified JCC codes`);
+if (detailCount !== comps.length) throw new Error(`Only ${detailCount}/${comps.length} lineups have verified board details`);
 const generated = [
   "// DATA_TFT_SNAPSHOT_START",
   `const DATA_TFT_UPDATED_AT=${JSON.stringify(updatedAt)};`,
@@ -266,4 +423,4 @@ const html = await readFile(HTML_PATH, "utf8");
 const marker = /\/\/ DATA_TFT_SNAPSHOT_START[\s\S]*?\/\/ DATA_TFT_SNAPSHOT_END/;
 if (!marker.test(html)) throw new Error("Snapshot markers are missing from the HTML file");
 await writeFile(HTML_PATH, html.replace(marker, generated), "utf8");
-console.log(JSON.stringify({ count: comps.length, codeCount, dataJMatchCount, trendCardCount, updatedAt, trendUpdatedAt }));
+console.log(JSON.stringify({ count: comps.length, codeCount, detailCount, equippedHeroCount, dataJMatchCount, trendCardCount, updatedAt, trendUpdatedAt }));
