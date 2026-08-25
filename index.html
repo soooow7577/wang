@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#f5f7ff">
+  <meta name="theme-color" content="#e3e7eb">
   <title>铲阵雷达｜自然之力阵容榜</title>
   <style>
     :root{
@@ -205,6 +205,82 @@
     }
     @media(min-width:561px){.app{border-right:1px solid #e1e5ef;border-left:1px solid #e1e5ef}.filter-panel{border-left:1px solid #dce2ed}}
   </style>
+  <style id="apple-silver-theme">
+    :root{
+      --bg:#e3e7eb;--panel:#f8f9fa;--ink:#1c1c1e;--muted:#6e7480;
+      --purple:#007aff;--purple-soft:#e9f3ff;--blue:#007aff;--teal:#30b0c7;
+      --gold:#c48208;--orange:#ff9500;--rose:#ff2d55;--card:#f8f9fa;--card-ink:#1c1c1e;
+      --line:rgba(84,92,104,.16);--safe-bottom:max(14px,env(safe-area-inset-bottom));
+    }
+    html{background:#d9dee3}
+    body{
+      background:
+        repeating-linear-gradient(90deg,rgba(255,255,255,.11) 0,rgba(255,255,255,.11) 1px,rgba(67,75,87,.025) 1px,rgba(67,75,87,.025) 2px),
+        linear-gradient(135deg,#fafbfc 0%,#d5dae0 31%,#f1f3f5 58%,#cbd1d7 100%);
+      background-attachment:fixed;color:var(--ink)
+    }
+    button{-webkit-tap-highlight-color:transparent}
+    button:focus-visible{outline:3px solid rgba(0,122,255,.28);outline-offset:2px}
+    .app{background:rgba(242,244,246,.52);box-shadow:0 0 60px rgba(53,61,72,.12)}
+    .app-head{padding-top:calc(12px + env(safe-area-inset-top));border-bottom:1px solid rgba(255,255,255,.82);background:rgba(236,239,242,.84);box-shadow:0 9px 28px rgba(54,62,73,.07);backdrop-filter:blur(28px) saturate(1.3)}
+    .titlebar{height:50px}
+    .live{color:#666d78;font-weight:650}
+    .live i,.live.online i{background:#34c759;box-shadow:0 0 0 4px rgba(52,199,89,.13)}
+    .season{color:#1c1c1e;font-size:19px;font-weight:820;letter-spacing:-.01em}
+    .season small{color:#7b818b}
+    .refresh{display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(84,92,104,.13);border-radius:50%;color:#007aff;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(235,238,241,.96));box-shadow:0 4px 13px rgba(54,62,73,.09),inset 0 1px 0 #fff}
+    .ranking-title{display:flex;align-items:center;justify-content:space-between;padding:8px 3px 3px}
+    .ranking-title strong{color:#222326;font-size:17px;font-weight:820;letter-spacing:-.01em}
+    .ranking-title span{padding:5px 8px;border:1px solid rgba(84,92,104,.12);border-radius:999px;color:#707680;background:rgba(255,255,255,.56);font-size:10px;font-weight:650}
+    .data-row{height:50px;gap:8px}
+    .data-note,.sort-btn,.filter-btn{padding:8px 11px;border:1px solid rgba(84,92,104,.14);border-radius:13px;color:#5f6671;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(231,234,238,.92));box-shadow:0 3px 10px rgba(54,62,73,.06),inset 0 1px 0 #fff;font-size:11px;text-decoration:none}
+    .data-note{color:#8a5c06;border-color:rgba(196,130,8,.2);background:linear-gradient(180deg,#fffaf0,#f5ebd6)}
+    .sort-btn.active{color:#fff;border-color:rgba(0,92,220,.38);background:linear-gradient(180deg,#2194ff 0%,#007aff 100%);box-shadow:0 5px 14px rgba(0,122,255,.23),inset 0 1px 0 rgba(255,255,255,.35)}
+    .filter-btn{margin-left:0;color:#007aff}
+    .grade-legend{margin:0 -3px 10px;padding:9px 10px;border:1px solid rgba(84,92,104,.13);border-radius:14px;color:#6c727c;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(225,229,233,.74));box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+    .grade-legend b{color:#282a2e}
+    .grade-dot{border-radius:7px;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+    .grade-s{background:#ff2d55}.grade-a{background:#af52de}.grade-b{background:#007aff}.grade-c{background:#34c759}.grade-d{background:#8e8e93}
+    .method-note{border-color:rgba(84,92,104,.13);border-radius:16px;color:#555c67;background:rgba(255,255,255,.76);box-shadow:0 7px 20px rgba(54,62,73,.07),inset 0 1px 0 #fff}
+    .filter-chip{border-color:rgba(0,122,255,.2);color:#0064d8;background:#e8f3ff}
+    .meta-strip{padding:10px 16px;color:#6e7480}
+    .list{gap:13px;padding:0 10px 30px}
+    .comp-card{border:1px solid rgba(255,255,255,.92);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(233,236,240,.94));box-shadow:0 13px 34px rgba(53,61,72,.12),0 2px 5px rgba(53,61,72,.05),inset 0 1px 0 #fff}
+    .poster{border-radius:23px 0 0 0;background:#cfd4da}
+    .rank-no{border:1px solid rgba(255,255,255,.24);border-radius:999px;background:rgba(32,36,42,.68);backdrop-filter:blur(9px)}
+    .tier{border-radius:9px;background:linear-gradient(180deg,#2194ff,#007aff);box-shadow:0 4px 10px rgba(0,122,255,.22)}
+    .comp-title{color:#1c1c1e;letter-spacing:-.01em}
+    .trend-pill{color:#c61f45;background:#ffeaf0}
+    .verify-pill{color:#137c52;background:#e6f7ec}
+    .metrics{border-color:rgba(84,92,104,.12);border-radius:13px;background:rgba(226,230,234,.62);box-shadow:inset 0 1px 2px rgba(68,76,87,.05)}
+    .metric span{color:#777d87}.metric strong{color:#26282c}.metric:first-child strong{color:#007aff}
+    .hero-icon{box-shadow:0 3px 7px rgba(41,47,56,.17)}
+    .trait{border-radius:7px;color:#515761;background:#e5e9ed}.trait.race{color:#765918;background:#f4ead2}
+    .copy{min-height:46px;margin:0 8px 8px;width:calc(100% - 16px);padding:11px 14px;border:1px solid rgba(0,92,220,.33);border-radius:16px;color:#fff;background:linear-gradient(180deg,#2194ff 0%,#007aff 100%);box-shadow:0 8px 19px rgba(0,122,255,.25),inset 0 1px 0 rgba(255,255,255,.36)}
+    .copy strong{font-size:13px;letter-spacing:.02em}.copy-kicker{opacity:.88}
+    .copy-action{padding:5px 8px;border-radius:999px;color:#007aff;background:#fff;box-shadow:0 2px 6px rgba(0,72,160,.13)}
+    .copy:disabled{border-color:rgba(84,92,104,.12);color:#8a909a;background:linear-gradient(180deg,#eceff2,#dfe3e7);box-shadow:inset 0 1px 0 #fff}
+    .copy:disabled .copy-action{color:#8a909a}
+    .bottom-nav{grid-template-columns:repeat(2,1fr);padding-top:10px;border-color:rgba(84,92,104,.13);background:rgba(242,244,246,.91);box-shadow:0 -9px 28px rgba(54,62,73,.09);backdrop-filter:blur(26px) saturate(1.25)}
+    .nav-item{min-height:43px;color:#777d87}.nav-item strong{font-size:19px}.nav-item.active{color:#007aff}
+    .backdrop{background:rgba(55,62,72,.3);backdrop-filter:blur(4px)}
+    .filter-panel{border-left:1px solid rgba(255,255,255,.8);color:#1c1c1e;background:linear-gradient(160deg,#f7f8f9,#dfe3e7);box-shadow:-22px 0 48px rgba(45,52,61,.2)}
+    .filter-head button{border:1px solid rgba(84,92,104,.12);border-radius:12px;color:#007aff;background:rgba(255,255,255,.72)}
+    .segmented{gap:4px;padding:4px;border:1px solid rgba(84,92,104,.12);border-radius:14px;background:rgba(218,222,226,.76)}
+    .segmented button{border-radius:11px;color:#676d77}.segmented button.active{color:#1c1c1e;background:#fff;box-shadow:0 3px 9px rgba(54,62,73,.13),inset 0 1px 0 #fff}
+    .group-title{color:#2c2e32}.group-title b{color:#007aff}.group-title:before,.group-title:after{background:rgba(84,92,104,.16)}
+    .hero-filter{border-color:rgba(84,92,104,.18);border-radius:13px;background:#d7dce1}.hero-filter.active{border-color:#007aff;box-shadow:0 0 0 3px rgba(0,122,255,.16)}
+    .trait-option{border-radius:12px;color:#535963}.trait-option.active{color:#fff;background:linear-gradient(180deg,#2194ff,#007aff);box-shadow:0 5px 13px rgba(0,122,255,.2)}
+    .filter-actions{background:linear-gradient(transparent,#e3e7eb 18%)}
+    .filter-actions button{border-radius:14px}.clear-btn{color:#545b65;background:#d5d9de}.done-btn{color:#fff;background:linear-gradient(180deg,#2194ff,#007aff);box-shadow:0 6px 15px rgba(0,122,255,.22)}
+    .toast{border:1px solid rgba(255,255,255,.12);color:#fff;background:rgba(34,37,43,.92);box-shadow:0 12px 30px rgba(30,35,42,.25);backdrop-filter:blur(16px)}
+    @media(max-width:430px){
+      .app-head{padding-right:10px;padding-left:10px}
+      .list{padding-right:8px;padding-left:8px}
+      .data-row{gap:7px}.data-note,.sort-btn,.filter-btn{padding:8px 9px}
+    }
+    @media(min-width:561px){.app{border-right:1px solid rgba(255,255,255,.78);border-left:1px solid rgba(255,255,255,.78)}.filter-panel{border-left:1px solid rgba(255,255,255,.82)}}
+  </style>
 </head>
 <body>
   <main class="app">
@@ -214,10 +290,7 @@
         <div class="season">自然之力<small id="version">18.18.1⌄</small></div>
         <button class="refresh" id="refresh" aria-label="刷新今日数据">↻</button>
       </div>
-      <nav class="top-tabs" aria-label="榜单模式">
-        <button class="active" data-view="rank">综合榜</button>
-        <button data-view="recommend">纯数据榜</button>
-      </nav>
+      <div class="ranking-title"><strong>今日综合榜</strong><span>战绩 + 趋势</span></div>
       <div class="data-row">
         <button class="data-note" id="dataNote">数据说明</button>
         <button class="sort-btn active" data-sort="compositeScore">综合分⌄</button>
@@ -238,7 +311,6 @@
   <nav class="bottom-nav" aria-label="主导航">
     <button class="nav-item active"><strong>▥</strong><span>阵容</span></button>
     <button class="nav-item" id="navInfo"><strong>▤</strong><span>资料</span></button>
-    <button class="nav-item" id="navAbout"><strong>ⓘ</strong><span>关于</span></button>
   </nav>
   <div class="backdrop" id="backdrop"></div>
   <aside class="filter-panel" id="filterPanel" aria-hidden="true" aria-label="阵容筛选">
@@ -308,7 +380,6 @@ const DATA_TFT_SNAPSHOT=[{"id":"16218","name":"高约小法师","tier":"A","avgP
     }
     function filteredRows(){
       let rows=state.comps.filter(x=>(!state.hero||x.heroes.some(h=>h.name===state.hero))&&(!state.career||x.careers.some(t=>t.name===state.career))&&(!state.race||x.races.some(t=>t.name===state.race)));
-      if(state.view==="recommend")return rows.sort((a,b)=>(b.dataScore??0)-(a.dataScore??0)||a.avgPlacement-b.avgPlacement);
       return rows.sort((a,b)=>state.sort==="avgPlacement"?a.avgPlacement-b.avgPlacement:b[state.sort]-a[state.sort]);
     }
     function render(){
@@ -334,8 +405,7 @@ const DATA_TFT_SNAPSHOT=[{"id":"16218","name":"高约小法师","tier":"A","avgP
     function legacyCopy(code){const t=document.createElement("textarea");t.value=code;t.setAttribute("readonly","");t.style.cssText="position:fixed;top:0;left:0;width:1px;height:1px;opacity:.01";document.body.appendChild(t);t.focus();t.setSelectionRange(0,t.value.length);let ok=false;try{ok=document.execCommand("copy")}catch{}t.remove();return ok}
     async function copyCode(id,button){const code=state.comps.find(x=>x.id===id)?.code;if(!code)return;let ok=false;let modernCopy=null;try{modernCopy=navigator.clipboard?.writeText?.(code)||null}catch{}if(modernCopy){try{await modernCopy;ok=true}catch{}}if(!ok)ok=legacyCopy(code);if(ok&&button){const label=button.querySelector("strong");const old=label.textContent;label.textContent="已复制 ✓";setTimeout(()=>label.textContent=old,1600)}toast(ok?"阵容码已复制，可到游戏中粘贴":"复制失败，请长按阵容码按钮重试")}
 
-    document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{state.view="rank";state.sort=b.dataset.sort;document.querySelectorAll("[data-sort]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view==="rank"));render()});
-    document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{state.view=b.dataset.view;document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x===b));render()});
+    document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{state.sort=b.dataset.sort;document.querySelectorAll("[data-sort]").forEach(x=>x.classList.toggle("active",x===b));render()});
     document.querySelectorAll("[data-filter-tab]").forEach(b=>b.onclick=()=>{state.filterTab=b.dataset.filterTab;document.querySelectorAll("[data-filter-tab]").forEach(x=>x.classList.toggle("active",x===b));renderFilterContent()});
     $("list").onclick=e=>{const b=e.target.closest("[data-copy]");if(b)copyCode(b.dataset.copy,b)};
     $("filterContent").onclick=e=>{const hero=e.target.closest("[data-hero]");if(hero){state.hero=state.hero===hero.dataset.hero?"":hero.dataset.hero;render();return}const trait=e.target.closest("[data-trait]");if(trait){const type=trait.dataset.traitType;state[type]=state[type]===trait.dataset.trait?"":trait.dataset.trait;render()}};
@@ -343,7 +413,6 @@ const DATA_TFT_SNAPSHOT=[{"id":"16218","name":"高约小法师","tier":"A","avgP
     $("clearFilter").onclick=()=>{state.hero="";state.race="";state.career="";render();toast("筛选已重置")};
     $("dataNote").onclick=()=>$("methodNote").classList.toggle("open");
     $("navInfo").onclick=()=>{state.filterTab="hero";document.querySelectorAll("[data-filter-tab]").forEach(x=>x.classList.toggle("active",x.dataset.filterTab==="hero"));openFilter()};
-    $("navAbout").onclick=()=>toast("非官方工具 · DataTFT + DataJ 战绩 · 抖音趋势");
 
     async function refresh(){
       $("status").classList.remove("online");$("status").querySelector("span").textContent="连接中";
