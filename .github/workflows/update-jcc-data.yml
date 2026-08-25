@@ -1,0 +1,35 @@
+name: 每日更新金铲铲阵容榜
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-jcc-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 更新阵容数据
+        run: node scripts/update_jcc_snapshot.mjs
+      - name: 提交变化
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "数据没有变化"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "每日更新金铲铲阵容数据"
+          git push
