@@ -3,29 +3,161 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#07110f">
-  <title>铲阵雷达｜可直接打开版</title>
+  <meta name="theme-color" content="#17161c">
+  <title>铲阵雷达｜自然之力阵容榜</title>
   <style>
-    :root{--ink:#edf3f0;--muted:#82928d;--line:rgba(200,229,217,.11);--mint:#55e3ad;--gold:#f1c873}
-    *{box-sizing:border-box}html{background:#07110f}body{margin:0;background:radial-gradient(circle at 8% 0%,rgba(70,208,154,.14),transparent 26rem),linear-gradient(180deg,#0a1512,#07100e);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}button,select{font:inherit}.app{width:min(1180px,calc(100% - 36px));margin:auto;padding:24px 0 48px}.topbar{display:flex;align-items:center;gap:12px}.mark{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;color:#07110f;background:linear-gradient(135deg,#8bf1c8,#39cb91);font-size:20px;font-weight:950}.topbar h1{margin:1px 0 0;font-size:18px}.eyebrow{margin:0;color:var(--mint);font-size:10px;font-weight:750;letter-spacing:.13em}.status{margin-left:auto;display:flex;align-items:center;gap:7px;color:#9cb0a8;font-size:11px}.status i{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 5px rgba(241,200,115,.1)}.status.live i{background:var(--mint);box-shadow:0 0 0 5px rgba(85,227,173,.1)}.hero{position:relative;overflow:hidden;margin-top:24px;padding:28px;border:1px solid var(--line);border-radius:25px;background:linear-gradient(120deg,rgba(23,40,34,.96),rgba(12,24,21,.96));display:flex;align-items:end;justify-content:space-between;gap:28px}.hero:after{content:"30";position:absolute;right:16px;top:-35px;color:rgba(255,255,255,.025);font-size:180px;font-weight:900}.hero>*{position:relative;z-index:1}.hero h2{margin:8px 0;font-size:clamp(28px,5vw,54px);letter-spacing:-.055em;line-height:1.05}.hero p:last-child{margin:0;color:#9aaca6;font-size:13px}.snapshot{display:grid;grid-template-columns:auto auto;align-items:baseline;gap:0 8px;min-width:180px}.snapshot strong{color:var(--gold);font-size:21px}.snapshot span{color:var(--muted);font-size:11px}.snapshot b{grid-column:1/-1;height:1px;margin:10px 0;background:var(--line)}.truth{display:flex;gap:12px;margin:14px 0 -2px;padding:10px 14px;border:1px solid rgba(241,200,115,.16);border-radius:13px;color:#9baba5;background:rgba(241,200,115,.045);font-size:10px}.truth strong{color:var(--gold);white-space:nowrap}.filters{margin:16px 0 28px;padding:15px;border:1px solid var(--line);border-radius:19px;background:rgba(14,25,22,.9)}.sort,.selects{display:flex;align-items:center;gap:8px}.sort>span{width:42px;color:var(--muted);font-size:11px}.sort button{padding:8px 12px;border:1px solid transparent;border-radius:10px;color:#8fa099;background:transparent;font-size:12px}.sort button.active{color:#07110f;background:var(--mint);font-weight:800}.selects{margin-top:12px}.selects label{display:flex;flex:1;align-items:center;gap:8px;color:var(--muted);font-size:11px}.selects select{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:11px;color:#dbe8e3;background:#0b1613}.section{display:flex;align-items:center;justify-content:space-between;margin:0 2px 12px;color:#cad8d3;font-size:13px;font-weight:750}.section small{color:#687a73;font-size:10px;font-weight:500}.list{display:grid;gap:10px}.card{display:grid;grid-template-columns:38px 58px minmax(180px,1fr) 260px 118px;align-items:center;gap:14px;padding:14px 15px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(100deg,rgba(19,31,27,.94),rgba(10,20,17,.94))}.rank{color:#65766f;font-size:13px}.avatar{width:54px;height:54px;object-fit:cover;border:1px solid rgba(241,200,115,.45);border-radius:14px;background:#17231f}.main{min-width:0}.title{display:flex;align-items:center;gap:8px}.title h3{margin:0;overflow:hidden;font-size:15px;text-overflow:ellipsis;white-space:nowrap}.tier{display:grid;place-items:center;width:20px;height:20px;border-radius:6px;color:#07110f;background:var(--mint);font-size:10px;font-weight:900}.tier.S{color:#13100a;background:var(--gold)}.core{margin:4px 0 7px;overflow:hidden;color:#778982;font-size:10px;text-overflow:ellipsis;white-space:nowrap}.traits{display:flex;gap:5px;overflow:hidden}.traits span{padding:3px 7px;border-radius:6px;color:#a9bab4;background:rgba(255,255,255,.045);font-size:9px;white-space:nowrap}.traits .origin{color:#e2bf7d;background:rgba(226,191,125,.08)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metrics div{padding:8px 10px;border-left:1px solid var(--line)}.metrics span{display:block;color:#71837c;font-size:9px}.metrics strong{display:block;margin-top:2px;color:#dce9e4;font-size:13px}.copy{padding:10px 8px;border:1px solid rgba(85,227,173,.28);border-radius:11px;color:var(--mint);background:rgba(85,227,173,.07);font-size:11px;font-weight:750}.copy:disabled{color:#596861;border-color:var(--line);background:rgba(255,255,255,.02)}footer{display:flex;justify-content:center;gap:22px;margin-top:28px;color:#53645d;font-size:9px}
-    @media(max-width:780px){.app{width:min(100% - 24px,560px);padding-top:16px}.hero{align-items:start;flex-direction:column;padding:24px 20px}.snapshot{grid-template-columns:auto auto 1px auto auto;width:100%}.snapshot b{grid-column:auto;width:1px;height:26px;margin:0 7px}.filters{position:sticky;top:8px;z-index:5;backdrop-filter:blur(16px)}.truth{align-items:start;flex-direction:column;gap:3px}.sort{overflow:auto}.sort>span{flex:0 0 35px}.sort button{white-space:nowrap}.selects label{align-items:stretch;flex-direction:column;gap:5px}.card{grid-template-columns:27px 48px minmax(0,1fr);gap:10px;padding:13px 12px}.avatar{width:46px;height:46px;border-radius:12px}.metrics{grid-column:2/-1}.metrics div{padding:4px 8px;border:0;background:rgba(255,255,255,.025);border-radius:8px}.copy{grid-column:2/-1;width:100%}.section small{display:none}footer{flex-wrap:wrap;gap:8px 16px}}
+    :root{
+      --bg:#17161c;--panel:#1d1c23;--ink:#f6f3fa;--muted:#9a96a3;
+      --purple:#c6a4ff;--gold:#f4c75d;--card:#eceaf0;--card-ink:#24222a;
+      --line:rgba(255,255,255,.10);--safe-bottom:max(14px,env(safe-area-inset-bottom));
+    }
+    *{box-sizing:border-box}
+    html{background:#111015}
+    body{margin:0;background:#111015;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+    button{font:inherit}
+    button:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+    .app{position:relative;width:min(100%,560px);min-height:100svh;margin:auto;padding:0 0 calc(78px + var(--safe-bottom));overflow-x:hidden;background:var(--bg);box-shadow:0 0 60px rgba(0,0,0,.35)}
+    .app-head{position:sticky;top:0;z-index:9;padding:calc(16px + env(safe-area-inset-top)) 16px 0;background:linear-gradient(180deg,rgba(23,22,28,.98) 82%,rgba(23,22,28,.92));backdrop-filter:blur(18px)}
+    .titlebar{display:grid;grid-template-columns:70px 1fr 70px;align-items:center;height:54px}
+    .live{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}
+    .live i{width:7px;height:7px;border-radius:50%;background:#f2b94f;box-shadow:0 0 0 4px rgba(242,185,79,.10)}
+    .live.online i{background:#70e1b1;box-shadow:0 0 0 4px rgba(112,225,177,.10)}
+    .season{text-align:center;font-size:20px;font-weight:750;letter-spacing:.02em;white-space:nowrap}
+    .season small{margin-left:6px;color:var(--muted);font-size:11px;font-weight:500}
+    .refresh{justify-self:end;border:0;color:var(--muted);background:transparent;font-size:19px}
+    .top-tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+    .top-tabs button{position:relative;padding:11px 0 13px;border:0;color:#8e8998;background:transparent;font-size:16px}
+    .top-tabs button.active{color:var(--purple);font-weight:750}
+    .top-tabs button.active:after{content:"";position:absolute;right:10%;bottom:-1px;left:10%;height:3px;border-radius:5px;background:var(--purple)}
+    .data-row{display:flex;align-items:center;gap:14px;height:46px;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+    .data-row::-webkit-scrollbar{display:none}
+    .data-note{flex:0 0 auto;border:0;color:#d5a73e;background:transparent;padding:0;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+    .sort-btn{flex:0 0 auto;padding:7px 0;border:0;color:#8f8a98;background:transparent;font-size:12px}
+    .sort-btn.active{color:var(--purple);font-weight:750}
+    .filter-btn{display:flex;align-items:center;gap:5px;margin-left:auto;padding:7px 0 7px 7px;border:0;color:#aaa5b2;background:transparent;font-size:12px}
+    .filter-btn svg{width:17px;height:17px}
+    .active-filters{display:none;gap:7px;padding:0 16px 10px;overflow-x:auto;scrollbar-width:none}
+    .active-filters.show{display:flex}
+    .filter-chip{flex:0 0 auto;padding:5px 9px;border:1px solid rgba(198,164,255,.35);border-radius:999px;color:#d9c6ff;background:rgba(198,164,255,.08);font-size:10px}
+    .meta-strip{display:flex;justify-content:space-between;padding:5px 17px 8px;color:#77727f;font-size:10px}
+    .list{display:grid;gap:6px;padding:0 12px 20px}
+    .comp-card{position:relative;display:grid;grid-template-columns:88px minmax(0,1fr);min-height:118px;overflow:hidden;border-radius:12px;background:var(--card);color:var(--card-ink);box-shadow:0 1px 0 rgba(255,255,255,.10)}
+    .poster{position:relative;min-height:118px;overflow:hidden;background:#3b3543}
+    .poster img{width:100%;height:100%;min-height:118px;object-fit:cover;object-position:center top;display:block}
+    .poster:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(8,7,10,.90))}
+    .tier{position:absolute;z-index:1;top:5px;left:6px;color:#ffe548;font-size:27px;font-weight:950;line-height:1;-webkit-text-stroke:1.4px #2f2b19;text-shadow:0 2px 2px #000}
+    .comp-name{position:absolute;z-index:1;right:5px;bottom:7px;left:5px;overflow:hidden;color:#f2d348;font-size:14px;font-weight:900;line-height:1.05;text-align:center;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 2px 3px #000}
+    .card-body{min-width:0;padding:6px 8px 6px}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding-right:27px;text-align:center}
+    .metric span{display:block;color:#7b7680;font-size:8px;line-height:1.1}
+    .metric strong{display:block;margin-top:2px;font-size:12px;font-weight:650}
+    .copy{position:absolute;top:7px;right:7px;display:grid;place-items:center;width:25px;height:25px;border:0;border-radius:6px;color:#34303a;background:transparent;font-size:20px;line-height:1}
+    .copy:disabled{opacity:.25}
+    .heroes{display:flex;gap:4px;margin:7px 0 5px;overflow:hidden}
+    .hero-icon{position:relative;flex:0 0 34px;width:34px;height:34px;border:2px solid #76828a;border-radius:50%;overflow:hidden;background:#37333f}
+    .hero-icon.p1{border-color:#888}.hero-icon.p2{border-color:#5ba56d}.hero-icon.p3{border-color:#54a6cf}.hero-icon.p4{border-color:#b166c6}.hero-icon.p5{border-color:#e3a73d}
+    .hero-icon img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-icon b{position:absolute;right:-1px;bottom:-1px;display:grid;place-items:center;width:12px;height:12px;border-radius:50%;color:#fff;background:#3b3642;font-size:7px}
+    .hero-icon.carry:after{content:"C";position:absolute;top:-1px;left:-1px;display:grid;place-items:center;width:12px;height:12px;border-radius:50%;color:#fff;background:#d750bb;font-size:7px;font-weight:900}
+    .traits{display:flex;gap:4px;overflow:hidden;white-space:nowrap}
+    .trait{display:flex;align-items:center;gap:3px;min-width:0;padding:2px 5px;border-radius:4px;color:#3d3943;background:#d8d6dc;font-size:9px}
+    .trait.race{background:#e5dcc9}
+    .trait img{width:12px;height:12px;object-fit:contain;filter:brightness(.35)}
+    .trait b{font-weight:850}
+    .empty{padding:60px 24px;text-align:center;color:var(--muted);font-size:13px}
+    .bottom-nav{position:fixed;z-index:10;right:50%;bottom:0;left:50%;display:grid;grid-template-columns:repeat(3,1fr);width:min(100%,560px);padding:9px 0 var(--safe-bottom);transform:translateX(-50%);border-top:1px solid var(--line);background:rgba(24,23,29,.96);backdrop-filter:blur(16px)}
+    .nav-item{display:grid;place-items:center;gap:2px;border:0;color:#aaa5b0;background:transparent;font-size:10px}
+    .nav-item strong{font-size:20px;line-height:1}
+    .nav-item.active{color:var(--purple)}
+    .backdrop{position:fixed;z-index:20;inset:0;visibility:hidden;opacity:0;background:rgba(0,0,0,.58);transition:.2s}
+    .backdrop.open{visibility:visible;opacity:1}
+    .filter-panel{position:fixed;z-index:21;top:0;right:max(0px,calc((100vw - 560px)/2));bottom:0;visibility:hidden;width:min(84vw,465px);padding:calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));overflow:auto;transform:translateX(104%);background:#1a191f;box-shadow:-18px 0 38px rgba(0,0,0,.36);transition:transform .24s ease,visibility 0s linear .24s}
+    .filter-panel.open{visibility:visible;transform:translateX(0);transition-delay:0s}
+    .filter-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .filter-head h2{margin:0;font-size:16px}
+    .filter-head button{padding:7px 10px;border:0;border-radius:8px;color:#bcb6c4;background:#27252d;font-size:11px}
+    .segmented{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+    .segmented button{padding:9px;border:0;border-radius:999px;color:#958f9e;background:transparent;font-size:13px}
+    .segmented button.active{color:#392c4b;background:var(--purple);font-weight:850;box-shadow:0 5px 14px rgba(198,164,255,.24)}
+    .filter-group{margin-bottom:17px}
+    .group-title{display:flex;align-items:center;gap:10px;margin:12px 0;color:#f3eff7;font-size:13px;font-weight:850}
+    .group-title:before,.group-title:after{content:"";height:1px;flex:1;background:var(--line)}
+    .group-title b{color:#e5b84b}
+    .hero-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px 6px}
+    .hero-filter{position:relative;aspect-ratio:1;border:2px solid #57525e;border-radius:10px;overflow:hidden;background:#302e36;padding:0}
+    .hero-filter img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-filter.active{border-color:var(--purple);box-shadow:0 0 0 2px rgba(198,164,255,.20)}
+    .trait-columns{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .trait-column h3{margin:0 0 10px;text-align:center;font-size:14px}
+    .trait-option{display:flex;align-items:center;gap:8px;width:100%;margin:2px 0;padding:7px 8px;border:0;border-radius:8px;color:#d9d4df;background:transparent;text-align:left;font-size:12px}
+    .trait-option img{width:19px;height:19px;object-fit:contain;filter:brightness(0) invert(1)}
+    .trait-option.active{color:#31253f;background:var(--purple);font-weight:800}
+    .trait-option.active img{filter:brightness(.25)}
+    .filter-actions{position:sticky;bottom:-18px;display:grid;grid-template-columns:1fr 2fr;gap:10px;margin:18px -16px -18px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#1a191f 18%)}
+    .filter-actions button{padding:11px;border:0;border-radius:11px;font-weight:800}
+    .clear-btn{color:#bbb5c2;background:#2a2830}.done-btn{color:#342641;background:var(--purple)}
+    .toast{position:fixed;z-index:50;right:50%;bottom:calc(82px + var(--safe-bottom));padding:9px 14px;opacity:0;transform:translate(50%,10px);border:1px solid rgba(198,164,255,.25);border-radius:999px;color:#efe5ff;background:#30273d;font-size:11px;pointer-events:none;transition:.2s}
+    .toast.show{opacity:1;transform:translate(50%,0)}
+    @media(max-width:430px){
+      .app-head{padding-right:12px;padding-left:12px}
+      .list{padding-right:8px;padding-left:8px}
+      .comp-card{grid-template-columns:80px minmax(0,1fr);min-height:108px}
+      .poster,.poster img{min-height:108px}
+      .card-body{padding:5px 6px}
+      .hero-icon{flex-basis:29px;width:29px;height:29px}
+      .metric strong{font-size:11px}
+      .traits{gap:3px}.trait{padding:2px 4px;font-size:8px}
+    }
+    @media(min-width:561px){.app{border-right:1px solid #2d2a34;border-left:1px solid #2d2a34}.filter-panel{border-left:1px solid #312e37}}
   </style>
 </head>
 <body>
   <main class="app">
-    <header class="topbar"><div class="mark">铲</div><div><p class="eyebrow" id="version">S18 · 版本 18.1</p><h1>铲阵雷达</h1></div><div class="status" id="status"><i></i><span>正在连接实时数据</span></div></header>
-    <section class="hero"><div><p class="eyebrow">无需登录 · 直接打开</p><h2>今天，玩什么阵容？</h2><p>直接读取当前对局统计；已核验的阵容码可一键复制。</p></div><div class="snapshot"><strong id="count">18</strong><span>套真实阵容</span><b></b><strong id="battles">104,642</strong><span>局样本</span></div></section>
-    <div class="truth"><strong id="truthTitle">当前真实数据只有 18 套</strong><span>目标展示前30，但数据源未返回满30套；本页不会伪造剩余阵容。</span></div>
-    <section class="filters" aria-label="阵容筛选"><div class="sort"><span>排序</span><button class="active" data-sort="avgPlacement">平均排名</button><button data-sort="top4Rate">前四率</button><button data-sort="topRate">登顶率</button></div><div class="selects"><label for="career">职业<select id="career" aria-label="职业"></select></label><label for="origin">特质 / 种族<select id="origin" aria-label="特质 / 种族"></select></label></div></section>
-    <div class="section"><span>强势阵容榜</span><small id="updated">数据快照：2026-08-25</small></div>
-    <section class="list" id="list"></section>
-    <footer><span>DataJ 对局统计</span><span>DataTFT 阵容码</span><span>非官方样本页</span></footer>
+    <header class="app-head">
+      <div class="titlebar">
+        <div class="live" id="status"><i></i><span>连接中</span></div>
+        <div class="season">自然之力<small id="version">18.18.1⌄</small></div>
+        <button class="refresh" id="refresh" aria-label="刷新实时数据">↻</button>
+      </div>
+      <nav class="top-tabs" aria-label="榜单模式">
+        <button class="active" data-view="rank">榜单</button>
+        <button data-view="recommend">推荐</button>
+      </nav>
+      <div class="data-row">
+        <button class="data-note" id="dataNote">数据说明</button>
+        <button class="sort-btn active" data-sort="avgPlacement">平均排名⌄</button>
+        <button class="sort-btn" data-sort="top4Rate">前四率⌄</button>
+        <button class="sort-btn" data-sort="topRate">登顶率⌄</button>
+        <button class="sort-btn" data-sort="sampleCount">场次⌄</button>
+        <button class="filter-btn" id="openFilter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M6 14v6"/></svg>筛选</button>
+      </div>
+    </header>
+    <div class="active-filters" id="activeFilters"></div>
+    <div class="meta-strip"><span id="count">18 套真实阵容</span><span id="updated">数据快照：2026-08-25</span></div>
+    <section class="list" id="list" aria-live="polite"></section>
   </main>
+
+  <nav class="bottom-nav" aria-label="主导航">
+    <button class="nav-item active"><strong>▥</strong><span>阵容</span></button>
+    <button class="nav-item" id="navInfo"><strong>▤</strong><span>资料</span></button>
+    <button class="nav-item" id="navAbout"><strong>ⓘ</strong><span>关于</span></button>
+  </nav>
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="filter-panel" id="filterPanel" aria-hidden="true" aria-label="阵容筛选">
+    <div class="filter-head"><h2>筛选阵容</h2><button id="closeFilter">关闭</button></div>
+    <div class="segmented"><button data-filter-tab="hero">英雄</button><button class="active" data-filter-tab="trait">羁绊</button></div>
+    <div id="filterContent"></div>
+    <div class="filter-actions"><button class="clear-btn" id="clearFilter">重置</button><button class="done-btn" id="doneFilter">查看结果</button></div>
+  </aside>
+  <div class="toast" id="toast"></div>
+
   <script>
     const CODES={
       "100":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3NDY0ODkwNTM5","95":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjIwNTUzNzk3","92":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjIyMTU1MzQ5","86":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3NTgzOTM3MDEz","85":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjIyNDEzNjg1","84":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjIyMzQ2NjYz","83":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjA0NzA3Njk2","90":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjA5Nzk0ODE1","98":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjIwNzg3NzYy","97":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3MjIyNTk5ODUx","93":"【阵容码】##MjIwMDQ2MDExMzg1MDcxMjUxNzg3NTQ2MzM4Mzg0"
     };
-    const SNAPSHOT=[
+    const CAREER_CANONICAL=new Map([["前卫","重装战士"],["猎手","猎人"],["神谕者","神谕"]]);
+    const RACE_CANONICAL=new Map([["莲华","灵魂莲华"],["黑色荆棘","黑荆棘"]]);
+    const RAW_SNAPSHOT=[
       {id:"100",name:"重装女警",tier:"S",avgPlacement:3.97,top4Rate:61.18,topRate:11.98,sampleCount:8074,core:"凯特琳 · 希维尔 · 伊莉丝",image:"https://img.dataj.cc/images/s18/hero/s18_head_caitlyn.png",careers:["重装战士","猎人","主宰"],origins:["花仙子","野兽之灵"]},
       {id:"89",name:"巨龙95",tier:"S",avgPlacement:3.89,top4Rate:59.59,topRate:22.02,sampleCount:2044,core:"远古巨龙 · 德莱文",image:"https://img.dataj.cc/images/s18/hero/s18_head_elderdragon.png",careers:["前卫","主宰"],origins:["烈焰","宝石骑士","翠神"]},
       {id:"99",name:"峡谷野怪",tier:"S",avgPlacement:3.94,top4Rate:59.55,topRate:17.58,sampleCount:2833,core:"绯红印记树怪 · 苍蓝雕纹魔像 · 深红锋喙鸟",image:"https://img.dataj.cc/images/s18/hero/s18_head_brambleback.png",careers:["狂战士","神谕"],origins:["峡谷野怪"]},
@@ -44,17 +176,81 @@
       {id:"97",name:"狮子狗",tier:"D",avgPlacement:4.99,top4Rate:40.89,topRate:10.12,sampleCount:741,core:"雷恩加尔 · 深红锋喙鸟 · 赫卡里姆",image:"https://img.dataj.cc/images/s18/hero/s18_head_rengar.png",careers:["重装战士","狂战士","迅捷射手"],origins:["峡谷野怪","月蚀骑士"]},
       {id:"87",name:"双狼互保",tier:"D",avgPlacement:5.08,top4Rate:37.95,topRate:3.37,sampleCount:801,core:"沃里克 · 暗影狼 · 墨菲特",image:"https://img.dataj.cc/images/s18/hero/s18_head_warwick.png",careers:["斗士"],origins:["黑色荆棘","劫掠梦魇"]},
       {id:"93",name:"世纪和解",tier:"D",avgPlacement:5.56,top4Rate:29.09,topRate:4.57,sampleCount:832,core:"雷恩加尔 · 卡兹克",image:"https://img.dataj.cc/images/s18/hero/s18_head_rengar.png",careers:["重装战士"],origins:["永恒之森","宿敌"]}
-    ].map(x=>({...x,code:CODES[x.id]}));
-    const CAREER_ALIASES=new Set(["主宰","召唤师","护卫","斗士","法师","狂战士","猎人","猎手","神谕","神谕者","裁决使","迅捷射手","重装战士","前卫","魔战士"]);
-    const state={comps:SNAPSHOT,sort:"avgPlacement",career:"全部职业",origin:"全部特质"};
+    ];
+    const toTrait=name=>({name,picture:""});
+    const SNAPSHOT=RAW_SNAPSHOT.map(x=>({...x,code:CODES[x.id],careers:[...new Set(x.careers.map(n=>CAREER_CANONICAL.get(n)||n))].map(toTrait),races:[...new Set(x.origins.map(n=>RACE_CANONICAL.get(n)||n))].map(toTrait),poster:x.image,heroes:x.core.split(" · ").map((name,i)=>({name,picture:i===0?x.image:"",poster:i===0?x.image:"",price:0,isCarry:i===0}))}));
+    const state={comps:SNAPSHOT,catalog:{heroes:[],careers:[],races:[]},sort:"avgPlacement",view:"rank",filterTab:"trait",hero:"",career:"",race:""};
     const $=id=>document.getElementById(id);
     const esc=s=>String(s??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
-    function fillSelect(id,all,values){const el=$(id),current=el.value||all;el.textContent="";[all,...new Set(values)].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;el.appendChild(o)});el.value=[...el.options].some(o=>o.value===current)?current:all}
-    function render(){fillSelect("career","全部职业",state.comps.flatMap(x=>x.careers));fillSelect("origin","全部特质",state.comps.flatMap(x=>x.origins));state.career=$("career").value;state.origin=$("origin").value;const rows=state.comps.filter(x=>(state.career==="全部职业"||x.careers.includes(state.career))&&(state.origin==="全部特质"||x.origins.includes(state.origin))).sort((a,b)=>state.sort==="avgPlacement"?a.avgPlacement-b.avgPlacement:b[state.sort]-a[state.sort]);$("list").innerHTML=rows.map((x,i)=>`<article class="card"><span class="rank">${String(i+1).padStart(2,"0")}</span><img class="avatar" src="${esc(x.image)}" alt="${esc(x.name)}" onerror="this.style.visibility='hidden'"><div class="main"><div class="title"><h3>${esc(x.name)}</h3><span class="tier ${esc(x.tier)}">${esc(x.tier)}</span></div><p class="core">${esc(x.core)}</p><div class="traits">${x.careers.slice(0,2).map(t=>`<span>${esc(t)}</span>`).join("")}${x.origins.slice(0,1).map(t=>`<span class="origin">${esc(t)}</span>`).join("")}</div></div><div class="metrics"><div><span>平均</span><strong>${x.avgPlacement.toFixed(2)}</strong></div><div><span>前四</span><strong>${x.top4Rate.toFixed(1)}%</strong></div><div><span>登顶</span><strong>${x.topRate.toFixed(1)}%</strong></div></div><button class="copy" data-id="${esc(x.id)}" ${x.code?"":"disabled"}>${x.code?"复制阵容码":"暂无可核验码"}</button></article>`).join("")||"<p>没有符合条件的阵容</p>"}
-    async function copyCode(id,button){const code=state.comps.find(x=>x.id===id)?.code;if(!code)return;let ok=false;try{await navigator.clipboard.writeText(code);ok=true}catch{}if(!ok){const t=document.createElement("textarea");t.value=code;t.setAttribute("readonly","");t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();ok=document.execCommand("copy");t.remove()}if(ok){button.textContent="已复制 ✓";setTimeout(()=>button.textContent="复制阵容码",1500)}}
-    document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-sort]").forEach(x=>x.classList.remove("active"));b.classList.add("active");state.sort=b.dataset.sort;render()});
-    $("career").onchange=e=>{state.career=e.target.value;render()};$("origin").onchange=e=>{state.origin=e.target.value;render()};$("list").onclick=e=>{const b=e.target.closest("button[data-id]");if(b)copyCode(b.dataset.id,b)};
-    async function refresh(){try{const base="https://www.dataj.cc/api/web";const versions=await fetch(`${base}/gamedata/gameVersion?setId=18`).then(r=>{if(!r.ok)throw Error(r.status);return r.json()});const version=versions.data.find(x=>x.battleCount>0)||versions.data[0];const [rank,catalog]=await Promise.all([fetch(`${base}/comp/rank?setId=${version.setId}&gameVersion=${encodeURIComponent(version.gameVersion)}&minSample=1`).then(r=>r.json()),fetch(`${base}/gamedata?setId=${version.setId}`).then(r=>r.json())]);const careerNames=new Set(catalog.data.trait.filter(x=>String(x.type)==="1").map(x=>x.name));const imageByHero=new Map(catalog.data.hero.map(x=>[x.name,x.picture]));state.comps=rank.data.slice(0,30).map(x=>{const careers=[],origins=[];x.traits.forEach(t=>(careerNames.has(t.name)||CAREER_ALIASES.has(t.name)?careers:origins).push(t.name));const core=x.heroes.filter(h=>h.isCore),lead=core.find(h=>h.isCarry)||core[0]||x.heroes[0];return{id:String(x.compId),name:x.name,tier:x.tier||"—",avgPlacement:x.avgPlacement,top4Rate:x.top4Rate,topRate:x.topRate,sampleCount:x.sampleCount,core:core.map(h=>h.heroName).join(" · "),image:lead?imageByHero.get(lead.heroName)||"":"",careers:[...new Set(careers)],origins:[...new Set(origins)],code:CODES[String(x.compId)]}});$("version").textContent=`S18 · 版本 ${version.gameVersion}`;$("count").textContent=state.comps.length;$("battles").textContent=Number(version.battleCount).toLocaleString("zh-CN");$("truthTitle").textContent=`当前真实数据只有 ${state.comps.length} 套`;$("updated").textContent=`实时刷新：${new Date().toLocaleString("zh-CN")}`;$("status").classList.add("live");$("status").querySelector("span").textContent="已连接实时数据";render()}catch(e){$("status").querySelector("span").textContent="实时源暂不可用 · 显示真实快照";render()}}
+    const uniqueByName=items=>[...new Map(items.map(x=>[x.name,x])).values()];
+
+    function traitMarkup(t,type){return `<span class="trait ${type}">${t.picture?`<img src="${esc(t.picture)}" alt="">`:""}<b>${esc(t.name)}</b></span>`}
+    function cardMarkup(x,index){
+      const heroes=x.heroes.slice(0,8).map(h=>`<span class="hero-icon p${Number(h.price)||0} ${h.isCarry?"carry":""}" title="${esc(h.name)}">${h.picture?`<img src="${esc(h.picture)}" alt="${esc(h.name)}">`:""}<b>${h.price||""}</b></span>`).join("");
+      const traits=[...x.races.slice(0,2).map(t=>traitMarkup(t,"race")),...x.careers.slice(0,2).map(t=>traitMarkup(t,"career"))].join("");
+      return `<article class="comp-card"><div class="poster"><img src="${esc(x.poster||x.image)}" alt="${esc(x.name)}"><span class="tier">${esc(x.tier||"—")}</span><span class="comp-name">${esc(x.name)}</span></div><div class="card-body"><div class="metrics"><div class="metric"><span>排名</span><strong>${index+1}</strong></div><div class="metric"><span>平均</span><strong>${Number(x.avgPlacement).toFixed(2)}</strong></div><div class="metric"><span>前四率</span><strong>${Number(x.top4Rate).toFixed(1)}%</strong></div><div class="metric"><span>登顶率</span><strong>${Number(x.topRate).toFixed(1)}%</strong></div></div><div class="heroes">${heroes}</div><div class="traits">${traits}</div></div><button class="copy" data-copy="${esc(x.id)}" ${x.code?"":"disabled"} aria-label="${x.code?"复制阵容码":"暂无已核验阵容码"}">⧉</button></article>`;
+    }
+    function filteredRows(){
+      let rows=state.comps.filter(x=>(!state.hero||x.heroes.some(h=>h.name===state.hero))&&(!state.career||x.careers.some(t=>t.name===state.career))&&(!state.race||x.races.some(t=>t.name===state.race)));
+      if(state.view==="recommend"){const order={S:0,A:1,B:2,C:3,D:4};return rows.sort((a,b)=>(order[a.tier]??9)-(order[b.tier]??9)||a.avgPlacement-b.avgPlacement)}
+      return rows.sort((a,b)=>state.sort==="avgPlacement"?a.avgPlacement-b.avgPlacement:b[state.sort]-a[state.sort]);
+    }
+    function render(){
+      const rows=filteredRows();
+      $("list").innerHTML=rows.map(cardMarkup).join("")||`<div class="empty">没有同时符合这些条件的阵容<br>可以点“筛选”后重置条件</div>`;
+      $("count").textContent=`${rows.length} / ${state.comps.length} 套真实阵容`;
+      const chips=[];if(state.hero)chips.push(`英雄：${state.hero}`);if(state.race)chips.push(`种族：${state.race}`);if(state.career)chips.push(`职业：${state.career}`);
+      $("activeFilters").innerHTML=chips.map(x=>`<span class="filter-chip">${esc(x)}</span>`).join("");$("activeFilters").classList.toggle("show",chips.length>0);renderFilterContent();
+    }
+    function renderFilterContent(){
+      const content=$("filterContent");
+      if(state.filterTab==="hero"){
+        if(!state.catalog.heroes.length){content.innerHTML=`<div class="empty">英雄资料正在随实时数据加载</div>`;return}
+        const prices=[1,2,3,4,5,0];
+        content.innerHTML=prices.map(price=>{const group=state.catalog.heroes.filter(h=>Number(h.price)===price);if(!group.length)return"";return `<section class="filter-group"><div class="group-title"><b>◉ ${price}</b></div><div class="hero-grid">${group.map(h=>`<button class="hero-filter ${state.hero===h.name?"active":""}" data-hero="${esc(h.name)}" title="${esc(h.name)}"><img src="${esc(h.picture)}" alt="${esc(h.name)}"></button>`).join("")}</div></section>`}).join("");return;
+      }
+      const traitButton=(t,type)=>`<button class="trait-option ${state[type]===t.name?"active":""}" data-trait-type="${type}" data-trait="${esc(t.name)}">${t.picture?`<img src="${esc(t.picture)}" alt="">`:"<span>◆</span>"}<span>${esc(t.name)}</span></button>`;
+      content.innerHTML=`<div class="trait-columns"><section class="trait-column"><h3>种族</h3>${state.catalog.races.map(t=>traitButton(t,"race")).join("")||"<div class='empty'>加载中</div>"}</section><section class="trait-column"><h3>职业</h3>${state.catalog.careers.map(t=>traitButton(t,"career")).join("")||"<div class='empty'>加载中</div>"}</section></div>`;
+    }
+    function openFilter(){renderFilterContent();$("backdrop").classList.add("open");$("filterPanel").classList.add("open");$("filterPanel").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
+    function closeFilter(){$("backdrop").classList.remove("open");$("filterPanel").classList.remove("open");$("filterPanel").setAttribute("aria-hidden","true");document.body.style.overflow=""}
+    function toast(message){$("toast").textContent=message;$("toast").classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").classList.remove("show"),1700)}
+    async function copyCode(id){const code=state.comps.find(x=>x.id===id)?.code;if(!code)return;let ok=false;try{await navigator.clipboard.writeText(code);ok=true}catch{}if(!ok){const t=document.createElement("textarea");t.value=code;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();ok=document.execCommand("copy");t.remove()}toast(ok?"阵容码已复制":"复制失败，请稍后再试")}
+
+    document.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{state.view="rank";state.sort=b.dataset.sort;document.querySelectorAll("[data-sort]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view==="rank"));render()});
+    document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{state.view=b.dataset.view;document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x===b));render()});
+    document.querySelectorAll("[data-filter-tab]").forEach(b=>b.onclick=()=>{state.filterTab=b.dataset.filterTab;document.querySelectorAll("[data-filter-tab]").forEach(x=>x.classList.toggle("active",x===b));renderFilterContent()});
+    $("list").onclick=e=>{const b=e.target.closest("[data-copy]");if(b)copyCode(b.dataset.copy)};
+    $("filterContent").onclick=e=>{const hero=e.target.closest("[data-hero]");if(hero){state.hero=state.hero===hero.dataset.hero?"":hero.dataset.hero;render();return}const trait=e.target.closest("[data-trait]");if(trait){const type=trait.dataset.traitType;state[type]=state[type]===trait.dataset.trait?"":trait.dataset.trait;render()}};
+    $("openFilter").onclick=openFilter;$("closeFilter").onclick=closeFilter;$("backdrop").onclick=closeFilter;$("doneFilter").onclick=closeFilter;
+    $("clearFilter").onclick=()=>{state.hero="";state.race="";state.career="";render();toast("筛选已重置")};
+    $("dataNote").onclick=()=>toast("实时对局统计；不补造未返回的阵容");
+    $("navInfo").onclick=()=>{state.filterTab="hero";document.querySelectorAll("[data-filter-tab]").forEach(x=>x.classList.toggle("active",x.dataset.filterTab==="hero"));openFilter()};
+    $("navAbout").onclick=()=>toast("非官方阵容工具 · DataJ 对局统计");
+
+    async function refresh(){
+      $("status").classList.remove("online");$("status").querySelector("span").textContent="连接中";
+      try{
+        const base="https://www.dataj.cc/api/web";
+        const versions=await fetch(`${base}/gamedata/gameVersion?setId=18`).then(r=>{if(!r.ok)throw Error(r.status);return r.json()});
+        const version=versions.data.find(x=>x.battleCount>0)||versions.data[0];
+        const [rank,catalog]=await Promise.all([fetch(`${base}/comp/rank?setId=${version.setId}&gameVersion=${encodeURIComponent(version.gameVersion)}&minSample=1`).then(r=>r.json()),fetch(`${base}/gamedata?setId=${version.setId}`).then(r=>r.json())]);
+        const traitCatalog=uniqueByName(catalog.data.trait||[]),heroCatalog=uniqueByName((catalog.data.hero||[]).filter(h=>h.isVisible!==false));
+        const careerNames=new Set(traitCatalog.filter(t=>String(t.type)==="1").map(t=>t.name)),raceNames=new Set(traitCatalog.filter(t=>String(t.type)==="0").map(t=>t.name));
+        const traitByName=new Map(traitCatalog.map(t=>[t.name,t])),heroByName=new Map(heroCatalog.map(h=>[h.name,h]));
+        state.catalog={heroes:heroCatalog.sort((a,b)=>Number(a.price)-Number(b.price)||a.name.localeCompare(b.name,"zh-CN")),careers:traitCatalog.filter(t=>String(t.type)==="1"),races:traitCatalog.filter(t=>String(t.type)==="0")};
+        state.comps=rank.data.slice(0,30).map(x=>{
+          const careers=[],races=[];
+          x.traits.forEach(t=>{const careerName=CAREER_CANONICAL.get(t.name)||(careerNames.has(t.name)?t.name:"");const raceName=RACE_CANONICAL.get(t.name)||(raceNames.has(t.name)?t.name:t.name);const name=careerName||raceName,target=careerName?careers:races;target.push(traitByName.get(name)||{name,picture:""})});
+          const heroes=x.heroes.map(h=>{const data=heroByName.get(h.heroName)||{};return{...h,picture:data.picture||"",poster:data.heroPoster||data.picture||"",price:h.price||data.price||0}}),lead=heroes.find(h=>h.isCarry)||heroes.find(h=>h.isCore)||heroes[0];
+          return{id:String(x.compId),name:x.name,tier:x.tier||"—",avgPlacement:x.avgPlacement,top4Rate:x.top4Rate,topRate:x.topRate,sampleCount:x.sampleCount,careers:uniqueByName(careers),races:uniqueByName(races),heroes,poster:lead?.poster||"",code:CODES[String(x.compId)]};
+        });
+        const catalogVersion=heroCatalog.find(h=>h.version)?.version||version.gameVersion;
+        $("version").textContent=`${catalogVersion}⌄`;$("updated").textContent=`实时 · ${new Date().toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit"})}`;
+        $("status").classList.add("online");$("status").querySelector("span").textContent="实时";render();
+      }catch(error){$("status").querySelector("span").textContent="快照";$("updated").textContent="实时源暂不可用";render()}
+    }
+    $("refresh").onclick=()=>{refresh();toast("正在刷新实时数据")};
     render();refresh();
   </script>
 </body>
