@@ -2,8 +2,8 @@ name: 每日更新金铲铲阵容榜
 
 on:
   schedule:
-    # GitHub Actions 使用 UTC；00:00 UTC = 北京时间 08:00。
-    - cron: "0 0 * * *"
+    # 提前并避开整点排队：23:37 UTC = 北京时间次日 07:37，部署后约 08:00 可用。
+    - cron: "37 23 * * *"
   workflow_dispatch:
 
 permissions:
