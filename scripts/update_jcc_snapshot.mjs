@@ -1,4 +1,3 @@
-
 import { createDecipheriv } from "node:crypto";
 import { setDefaultResultOrder } from "node:dns";
 import { readFile, writeFile } from "node:fs/promises";
@@ -9,11 +8,13 @@ const HTML_PATH = new URL("../index.html", import.meta.url);
 const API_BASE = "https://api.datatft.com";
 const SITE_BASE = "https://jcc.datatft.com";
 const DATAJ_BASE = "https://www.dataj.cc/api/web";
+const OFFICIAL_GAME_PAGE = "https://www.sina.cn/media/7504806444";
 const TEAM_QUERY = { version: "jcc_18.1", season: "18", tier: "diamond", time: 5 };
 const DOUYIN_TREND_PAGES = [
   "https://jingxuan.douyin.com/m/video/7639771246565256271",
   "https://jingxuan.douyin.com/m/video/7675665871998150266",
   "https://jingxuan.douyin.com/m/video/7675742864353037595",
+  "https://jingxuan.douyin.com/m/video/7646660681831419187",
 ];
 const MOBILE_UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148";
 const COMP_ALIASES = {
@@ -44,8 +45,15 @@ const COMP_ALIASES = {
   "16261": ["重装女警", "爆头凯特琳", "无限爆头凯特琳"],
 };
 
-async function getText(url) {
-  const response = await fetch(url, { cache: "no-store", headers: { "user-agent": MOBILE_UA } });
+async function getText(url, extraHeaders = {}) {
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: {
+      "user-agent": MOBILE_UA,
+      "accept-language": "zh-CN,zh;q=0.9",
+      ...extraHeaders,
+    },
+  });
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
   return response.text();
 }
@@ -344,16 +352,43 @@ function aliasesFor(comp) {
 }
 
 async function loadDataJComps() {
-  try {
-    const versions = await getJson(`${DATAJ_BASE}/gamedata/gameVersion?setId=18`);
-    const version = versions.data?.find((item) => Number(item.battleCount) > 0) || versions.data?.[0];
-    if (!version) return [];
-    const rank = await getJson(`${DATAJ_BASE}/comp/rank?setId=${version.setId}&gameVersion=${encodeURIComponent(version.gameVersion)}&minSample=1`);
-    return Array.isArray(rank.data) ? rank.data : [];
-  } catch (error) {
-    console.warn(`DataJ cross-check skipped: ${error.message}`);
-    return [];
+  const versions = await getJson(`${DATAJ_BASE}/gamedata/gameVersion?setId=18`);
+  const version = versions.data?.find((item) => Number(item.battleCount) > 0) || versions.data?.[0];
+  if (!version) throw new Error("DataJ returned no active S18 version");
+  const rank = await getJson(`${DATAJ_BASE}/comp/rank?setId=${version.setId}&gameVersion=${encodeURIComponent(version.gameVersion)}&minSample=1`);
+  if (!Array.isArray(rank.data) || rank.data.length < 10) {
+    throw new Error(`DataJ returned only ${rank.data?.length || 0} ranked lineups`);
   }
+  return rank.data;
+}
+
+function plainText(value) {
+  return String(value || "")
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+async function loadOfficialGameSignal() {
+  const html = await getText(OFFICIAL_GAME_PAGE);
+  const posts = [...html.matchAll(/<div class="time">([\s\S]{0,300}?)<\/div>[\s\S]{0,5000}?<div class="post-text">([\s\S]*?)<\/div>/g)]
+    .map((match) => ({
+      time: plainText(match[1]).match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/)?.[0] || "",
+      text: plainText(match[2]),
+    }))
+    .filter((post) => post.time && /金铲铲之战/.test(post.text) && /(版本|平衡调整|停服维护|赛季.*更新|更新.*公告)/.test(post.text));
+  const latest = posts[0];
+  if (!latest) throw new Error("Official game feed returned no version or balance update");
+  return {
+    title: latest.text.slice(0, 90),
+    updatedAt: `${latest.time.replace(" ", "T")}:00+08:00`,
+    url: OFFICIAL_GAME_PAGE,
+  };
 }
 
 function parseDouyinCards(html) {
@@ -368,10 +403,32 @@ function parseDouyinCards(html) {
   }).filter(Boolean);
 }
 
+function isRecentDouyinCard(card) {
+  const value = String(card.time || "");
+  if (/分钟|小时|昨天|前天/.test(value)) return true;
+  const days = value.match(/(\d+)天前/);
+  if (days) return Number(days[1]) <= 7;
+  const date = value.match(/(\d{1,2})月(\d{1,2})日/);
+  if (!date) return value === "近期";
+  const now = new Date();
+  const published = new Date(now.getFullYear(), Number(date[1]) - 1, Number(date[2]));
+  if (published > now) published.setFullYear(published.getFullYear() - 1);
+  return now - published <= 7 * 24 * 60 * 60 * 1000;
+}
+
 async function loadDouyinCards() {
-  const settled = await Promise.allSettled(DOUYIN_TREND_PAGES.map((url) => getText(url)));
-  const cards = settled.flatMap((result) => result.status === "fulfilled" ? parseDouyinCards(result.value) : []);
-  return [...new Map(cards.map((card) => [card.url, card])).values()];
+  const settled = await Promise.allSettled(DOUYIN_TREND_PAGES.map((url) => getText(url, {
+    referer: "https://www.douyin.com/",
+  })));
+  const pageCount = settled.filter((result) => result.status === "fulfilled" && parseDouyinCards(result.value).length).length;
+  const cards = settled
+    .flatMap((result) => result.status === "fulfilled" ? parseDouyinCards(result.value) : [])
+    .filter(isRecentDouyinCard);
+  const uniqueCards = [...new Map(cards.map((card) => [card.url, card])).values()];
+  if (pageCount < 3 || uniqueCards.length < 10) {
+    throw new Error(`Douyin freshness check failed: ${pageCount} pages and ${uniqueCards.length} recent cards`);
+  }
+  return { cards: uniqueCards, pageCount };
 }
 
 function findDataJMatch(comp, dataJComps) {
@@ -427,12 +484,13 @@ function addCompositeSignals(comp, dataJComps, douyinCards) {
 }
 
 async function buildSnapshot() {
-  const [teamData, rankData, gameMetadata, dataJComps, douyinCards] = await Promise.all([
+  const [teamData, rankData, gameMetadata, dataJComps, douyinResult, officialGame] = await Promise.all([
     post("/team/list", TEAM_QUERY),
     post("/team/rank", {}),
     loadGameMetadata(),
     loadDataJComps(),
     loadDouyinCards(),
+    loadOfficialGameSignal(),
   ]);
   if (!Array.isArray(teamData.list) || teamData.list.length === 0) throw new Error("DataTFT returned no S18 teams");
   const heroById = new Map(gameMetadata.heroes.map((hero) => [String(hero.chessId), hero]));
@@ -511,17 +569,33 @@ async function buildSnapshot() {
   if (guidesWithLatinText.length) {
     throw new Error(`Guide text still contains English: ${guidesWithLatinText.join(", ")}`);
   }
-  const comps = baseComps.map((comp) => addCompositeSignals(comp, dataJComps, douyinCards));
+  const comps = baseComps.map((comp) => addCompositeSignals(comp, dataJComps, douyinResult.cards));
+  const dataJMatchCount = comps.filter((comp) => comp.dataJ).length;
+  if (dataJMatchCount < 10) {
+    throw new Error(`Only ${dataJMatchCount}/${comps.length} lineups matched the DataJ cross-check`);
+  }
   return {
     comps,
     updatedAt: rankData.updateTime || new Date().toISOString(),
+    checkedAt: new Date().toISOString(),
     trendUpdatedAt: new Date().toISOString(),
-    trendCardCount: douyinCards.length,
-    dataJMatchCount: comps.filter((comp) => comp.dataJ).length,
+    trendCardCount: douyinResult.cards.length,
+    douyinPageCount: douyinResult.pageCount,
+    dataJMatchCount,
+    officialGame,
   };
 }
 
-const { comps, updatedAt, trendUpdatedAt, trendCardCount, dataJMatchCount } = await buildSnapshot();
+const {
+  comps,
+  updatedAt,
+  checkedAt,
+  trendUpdatedAt,
+  trendCardCount,
+  douyinPageCount,
+  dataJMatchCount,
+  officialGame,
+} = await buildSnapshot();
 const codeCount = comps.filter((comp) => comp.code).length;
 const detailCount = comps.filter((comp) => comp.board?.length).length;
 const equippedHeroCount = comps.reduce((count, comp) => count + comp.board.filter((hero) => hero.equips?.length).length, 0);
@@ -530,7 +604,11 @@ if (detailCount !== comps.length) throw new Error(`Only ${detailCount}/${comps.l
 const generated = [
   "// DATA_TFT_SNAPSHOT_START",
   `const DATA_TFT_UPDATED_AT=${JSON.stringify(updatedAt)};`,
+  `const SOURCE_CHECKED_AT=${JSON.stringify(checkedAt)};`,
   `const TREND_UPDATED_AT=${JSON.stringify(trendUpdatedAt)};`,
+  `const DOUYIN_TREND_COUNT=${JSON.stringify(trendCardCount)};`,
+  `const DATAJ_MATCH_COUNT=${JSON.stringify(dataJMatchCount)};`,
+  `const OFFICIAL_GAME_UPDATE=${JSON.stringify(officialGame)};`,
   `const DATA_TFT_SNAPSHOT=${JSON.stringify(comps)};`,
   "// DATA_TFT_SNAPSHOT_END",
 ].join("\n");
@@ -538,4 +616,15 @@ const html = await readFile(HTML_PATH, "utf8");
 const marker = /\/\/ DATA_TFT_SNAPSHOT_START[\s\S]*?\/\/ DATA_TFT_SNAPSHOT_END/;
 if (!marker.test(html)) throw new Error("Snapshot markers are missing from the HTML file");
 await writeFile(HTML_PATH, html.replace(marker, generated), "utf8");
-console.log(JSON.stringify({ count: comps.length, codeCount, detailCount, equippedHeroCount, dataJMatchCount, trendCardCount, updatedAt, trendUpdatedAt }));
+console.log(JSON.stringify({
+  count: comps.length,
+  codeCount,
+  detailCount,
+  equippedHeroCount,
+  dataJMatchCount,
+  trendCardCount,
+  douyinPageCount,
+  officialGame,
+  updatedAt,
+  checkedAt,
+}));
