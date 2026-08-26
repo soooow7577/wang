@@ -2,6 +2,7 @@ name: 每日更新金铲铲阵容榜
 
 on:
   schedule:
+    # GitHub Actions 使用 UTC；00:00 UTC = 北京时间 08:00。
     - cron: "0 0 * * *"
   workflow_dispatch:
 
@@ -15,6 +16,9 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TZ: Asia/Shanghai
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
